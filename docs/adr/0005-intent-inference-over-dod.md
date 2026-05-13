@@ -1,0 +1,5 @@
+# Intent inference, not DoD inference
+
+Shepherd infers what the user was trying to do (intent) and asks them to confirm, rather than inferring a Definition of Done. The original design used "DoD" to describe both what the user was doing and whether it was accomplished. These are different questions: intent is "what kind of task was this?" (feature, bugfix, refactor, etc.), outcome is "did it work?" (satisfied, partial, unsatisfied). DoD conflates them and implies specific success criteria that the system can't infer from session signals.
+
+**Consequences:** The confirmation flow is simpler: "You were working on: feature implementation using TDD — correct?" followed by a satisfaction rating. No "Definition of Done" text field. Specific success criteria only surface when users explicitly need them, which is rare in practice. The delegation confidence map (delegable / exploration / validation-required) is derived from intent + satisfaction patterns over 50+ sessions, not captured per-session.

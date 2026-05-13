@@ -1,0 +1,5 @@
+# Minimal schema with add-when-needed
+
+Shepherd stores 8 fields per session in SQLite (session_id, timestamp_start, end_type, task_type, intent_confirmed, satisfaction, skills_used, mcps_used). Everything else lives in the raw JSONL transcript and is added to the schema only when the dashboard demonstrates a need for it. We chose this over capturing every available field upfront because designing a schema for queries we haven't validated leads to premature generalization and stale fields that were never used.
+
+**Consequences:** Dashboard views in v0.1 are limited to session list and satisfaction by task_type. When users ask for new views (model breakdown, trend over time, skill frequency), we add fields based on actual demand rather than prediction. The JSONL transcript is always available for enrichment, so no data is lost — just not indexed until needed.
