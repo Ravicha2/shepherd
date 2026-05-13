@@ -1,4 +1,9 @@
-superpowers
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
 
 # Python
 __pycache__/
@@ -13,9 +18,13 @@ build/
 .venv/
 
 # uv
-uv.lock
+# uv.lock should be committed for reproducibility
 
 # Testing
 .pytest_cache/
 htmlcov/
 .coverage
+
+# Environment
+.env
+.env.*
