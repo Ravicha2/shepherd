@@ -9,10 +9,12 @@ AI benchmarks measure what models *can* do in isolation. They don't measure what
 ## Install
 
 ```bash
-pipx install shepherd
+uv tool install shepherd
 ```
 
 ## Usage
+
+> **Note:** CLI commands are the target interface. Not yet implemented — see project structure below.
 
 ```bash
 # Rate your most recent unrated session
@@ -37,20 +39,22 @@ That's it. Under 5 seconds.
 
 ## How it works
 
+> **Note:** This describes the target architecture. Implemented modules are marked below.
+
 Shepherd reads session transcripts left by your AI coding tool and normalizes them into a common format. It infers your intent from skills, MCP servers, and tool patterns — then asks you to confirm.
 
 ```mermaid
 flowchart TD
-    A["AI Coding Tool<br/>leaves transcripts"] --> B["Adapter<br/>(Claude Code v0.1)"]
-    B --> C["NormalizedSession<br/>(8 fields)"]
-    C --> D["IntentClassifier<br/>(rule-based v0.1)"]
+    A["AI Coding Tool<br/>leaves transcripts"] --> B["Adapter<br/>(Claude Code — planned)"]
+    B --> C["NormalizedSession<br/>(8 fields) ✅"]
+    C --> D["IntentClassifier<br/>(rule-based — planned)"]
     D --> E{"Inferred<br/>task_type?"}
     E -->|Has signal| F["Prompt user<br/>Confirm intent"]
     E -->|No signal| G["Prompt user<br/>Classify manually"]
     F --> H["Satisfaction rating<br/>Satisfied / Partial / Unsatisfied"]
     G --> H
-    H --> I["SQLite<br/>~/.shepherd/sessions.db"]
-    I --> J["Dashboard<br/>Session list + Satisfaction by task type"]
+    H --> I["SQLite<br/>~/.shepherd/sessions.db — planned"]
+    I --> J["Dashboard<br/>Session list + Satisfaction by task type — planned"]
 ```
 
 ## Agent-agnostic
@@ -59,7 +63,7 @@ Shepherd doesn't hook into any AI tool. It reads transcripts after the session e
 
 | Adapter | Status | Transcript format |
 |---------|--------|-------------------|
-| Claude Code | v0.1 | JSONL from `~/.claude/projects/` |
+| Claude Code | Planned | JSONL from `~/.claude/projects/` |
 | Cursor | Planned | SQLite |
 | Aider | Planned | Markdown |
 | Copilot | Planned | VS Code logs |
@@ -113,27 +117,28 @@ When inference is wrong, correct it. That signal improves future accuracy.
 
 ```bash
 # Install for development
-pip install -e ".[dev]"
+uv sync
 
 # Run tests
-pytest
+uv run pytest
 
 # Run with local changes
-shepherd rate
+uv run shepherd rate
 ```
 
 ## Project structure
 
 ```
 shepherd/
-├── adapters/          # Per-agent transcript parsers
-│   └── claude_code.py # Claude Code JSONL adapter (v0.1)
-├── classifier.py      # IntentClassifier (rule-based)
-├── models.py          # NormalizedSession dataclass
-├── storage.py         # SQLite CRUD
-├── discovery.py       # Session discovery (find unrated transcripts)
-├── cli.py             # CLI commands (rate, list, dashboard)
-└── dashboard.py       # Local web UI
+├── adapters/          # Per-agent transcript parsers (planned)
+│   └── claude_code.py # Claude Code JSONL adapter (planned)
+├── classifier.py      # IntentClassifier (rule-based) — planned
+├── models.py          # NormalizedSession dataclass ✅
+├── pipeline.py        # Pipeline orchestrator (scaffolded)
+├── storage.py         # SQLite CRUD — planned
+├── discovery.py       # Session discovery (find unrated transcripts) — planned
+├── cli.py             # CLI commands (rate, list, dashboard) — planned
+└── dashboard.py       # Local web UI — planned
 ```
 
 ## License
